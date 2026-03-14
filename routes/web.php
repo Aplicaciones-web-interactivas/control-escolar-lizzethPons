@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MateriaController;
+use App\Http\Controllers\HorarioController;
+use App\Http\Controllers\GrupoController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -23,4 +25,6 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('users', UserController::class)->except(['show']);
     Route::resource('materias', MateriaController::class)->except(['show']);
+    Route::resource('horarios', HorarioController::class)->except(['show']);
+    Route::resource('grupos', GrupoController::class)->except(['show']);
 });

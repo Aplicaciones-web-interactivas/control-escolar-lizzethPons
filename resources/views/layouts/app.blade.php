@@ -18,6 +18,15 @@
         .alert-success { background:#dcfce7; color:#166534; padding:10px; border-radius:6px; margin-bottom:15px; }
         .alert-error { background:#fee2e2; color:#991b1b; padding:10px; border-radius:6px; margin-bottom:15px; }
         .inline { display:inline; }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -27,6 +36,8 @@
         <a href="{{ route('home') }}">Inicio</a>
         <a href="{{ route('users.index') }}">Usuarios</a>
         <a href="{{ route('materias.index') }}">Materias</a>
+        <a href="{{ route('horarios.index') }}">Horarios</a>
+        <a href="{{ route('grupos.index') }}">Grupos</a>
 
         <form action="{{ route('logout') }}" method="POST" class="inline" style="float:right;">
             @csrf

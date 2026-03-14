@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Materia extends Model
+class Grupo extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'horario_id',
         'nombre',
-        'clave',
     ];
 
-    public function horarios()
+    public function horario()
     {
-        return $this->hasMany(Horario::class);
+        return $this->belongsTo(Horario::class);
     }
 }
