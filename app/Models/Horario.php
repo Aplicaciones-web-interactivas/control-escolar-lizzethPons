@@ -31,4 +31,14 @@ class Horario extends Model
     {
         return $this->hasMany(Grupo::class);
     }
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
+
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class);
+    }
 }

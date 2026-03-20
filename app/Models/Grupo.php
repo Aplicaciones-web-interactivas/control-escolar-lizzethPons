@@ -18,4 +18,14 @@ class Grupo extends Model
     {
         return $this->belongsTo(Horario::class);
     }
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
+
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class);
+    }
 }

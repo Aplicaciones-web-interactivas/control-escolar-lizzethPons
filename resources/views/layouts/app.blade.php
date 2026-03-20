@@ -38,6 +38,8 @@
         <a href="{{ route('materias.index') }}">Materias</a>
         <a href="{{ route('horarios.index') }}">Horarios</a>
         <a href="{{ route('grupos.index') }}">Grupos</a>
+        <a href="{{ route('inscripciones.index') }}">Inscripciones</a>
+        <a href="{{ route('calificaciones.index') }}">Calificaciones</a>
 
         <form action="{{ route('logout') }}" method="POST" class="inline" style="float:right;">
             @csrf
