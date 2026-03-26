@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -39,6 +40,33 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()->route('home');
+    }
+
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'clave_institucional' => 'required|string|max:255|unique:users,clave_institucional',
+            'password' => ['required', 'confirmed', Password::min(4)],
+        ]);
+
+        $user = User::create([
+            'nombre' => $request->nombre,
+            'clave_institucional' => $request->clave_institucional,
+            'password' => Hash::make($request->password),
+            'rol' => 'user',
+            'activo' => 1,
+        ]);
+
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect()->route('home')->with('success', 'Registro exitoso. Bienvenido.');
     }
 
     public function logout(Request $request)
