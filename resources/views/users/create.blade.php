@@ -18,8 +18,13 @@
         <label>Confirmar contraseña</label>
         <input type="password" name="password_confirmation" required>
 
-        <label>Rol</label>
-        <input type="text" name="rol" value="{{ old('rol', 'user') }}">
+        <div class="form-group">
+            <label>Rol</label>
+            <select name="rol" required>
+                <option value="alumno" {{ old('rol') == 'alumno' ? 'selected' : '' }}>Alumno</option>
+                <option value="maestro" {{ old('rol') == 'maestro' ? 'selected' : '' }}>Maestro</option>
+            </select>
+        </div>
 
         <label>
             <input type="checkbox" name="activo" value="1" checked style="width:auto;">

@@ -28,4 +28,9 @@ class Grupo extends Model
     {
         return $this->hasMany(Calificacion::class);
     }
+
+    public function tareas()
+    {
+        return $this->hasMany(Tarea::class);
+    }
 }

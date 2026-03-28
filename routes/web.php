@@ -8,6 +8,8 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\CalificacionController;
+use App\Http\Controllers\TareaController;
+use App\Http\Controllers\EntregaController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -24,58 +26,39 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', function () {
         $mensajeChuck = 'No se pudo cargar el mensaje.';
-        $debugChuck = null;
 
         try {
-            // 1. Obtener chiste de Chuck Norris
             $respuestaChuck = \Illuminate\Support\Facades\Http::withoutVerifying()
                 ->timeout(15)
                 ->acceptJson()
                 ->get('https://api.chucknorris.io/jokes/random');
 
-            if (!$respuestaChuck->successful()) {
-                $debugChuck = 'Error API Chuck Norris: HTTP ' . $respuestaChuck->status();
-                return view('home', compact('mensajeChuck', 'debugChuck'));
+            if ($respuestaChuck->successful()) {
+                $datosChuck = $respuestaChuck->json();
+                $chisteIngles = $datosChuck['value'] ?? null;
+
+                if ($chisteIngles) {
+                    $respuestaTraduccion = \Illuminate\Support\Facades\Http::withoutVerifying()
+                        ->timeout(20)
+                        ->get('https://api.mymemory.translated.net/get', [
+                            'q' => $chisteIngles,
+                            'langpair' => 'en|es',
+                        ]);
+
+                    if ($respuestaTraduccion->successful()) {
+                        $datosTraduccion = $respuestaTraduccion->json();
+                        $traduccion = $datosTraduccion['responseData']['translatedText'] ?? null;
+                        $mensajeChuck = $traduccion ?: $chisteIngles;
+                    } else {
+                        $mensajeChuck = $chisteIngles;
+                    }
+                }
             }
-
-            $datosChuck = $respuestaChuck->json();
-            $chisteIngles = $datosChuck['value'] ?? null;
-
-            if (!$chisteIngles) {
-                $debugChuck = 'La API de Chuck Norris no devolvió el campo value.';
-                return view('home', compact('mensajeChuck', 'debugChuck'));
-            }
-
-            // 2. Traducir a español con MyMemory
-            $respuestaTraduccion = \Illuminate\Support\Facades\Http::withoutVerifying()
-                ->timeout(20)
-                ->get('https://api.mymemory.translated.net/get', [
-                    'q' => $chisteIngles,
-                    'langpair' => 'en|es',
-                ]);
-
-            if (!$respuestaTraduccion->successful()) {
-                $mensajeChuck = $chisteIngles;
-                $debugChuck = 'La traducción falló. Se muestra el chiste en inglés. HTTP ' . $respuestaTraduccion->status();
-                return view('home', compact('mensajeChuck', 'debugChuck'));
-            }
-
-            $datosTraduccion = $respuestaTraduccion->json();
-            $traduccion = $datosTraduccion['responseData']['translatedText'] ?? null;
-
-            if (!$traduccion) {
-                $mensajeChuck = $chisteIngles;
-                $debugChuck = 'La traducción no devolvió texto. Se muestra el chiste en inglés.';
-                return view('home', compact('mensajeChuck', 'debugChuck'));
-            }
-
-            $mensajeChuck = $traduccion;
-
         } catch (\Throwable $e) {
-            $debugChuck = 'Excepción: ' . $e->getMessage();
+            $mensajeChuck = 'No se pudo cargar el mensaje.';
         }
 
-        return view('home', compact('mensajeChuck', 'debugChuck'));
+        return view('home', compact('mensajeChuck'));
     })->name('home');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -92,4 +75,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('calificaciones', CalificacionController::class)
         ->parameters(['calificaciones' => 'calificacion'])
         ->except(['show']);
+
+    Route::resource('tareas', TareaController::class)
+        ->parameters(['tareas' => 'tarea'])
+        ->except(['show']);
+
+    Route::get('/mis-tareas', [EntregaController::class, 'indexAlumno'])->name('mis.tareas');
+    Route::post('/entregas/{tarea}', [EntregaController::class, 'store'])->name('entregas.store');
+    Route::get('/revisar-entregas', [EntregaController::class, 'revisar'])->name('entregas.revisar');
+    Route::get('/descargar-entrega/{entrega}', [EntregaController::class, 'descargar'])->name('entregas.descargar');
 });

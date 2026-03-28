@@ -36,13 +36,19 @@ class User extends Authenticatable
         return $this->hasMany(Horario::class);
     }
 
-    public function inscripciones()
-        {
-            return $this->hasMany(Inscripcion::class);
-        }
+    public function entregas()
+    {
+    return $this->hasMany(Entrega::class);
+    }
 
-        public function calificaciones()
-        {
-            return $this->hasMany(Calificacion::class);
-        }
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
+
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class);
+    }
 }
+

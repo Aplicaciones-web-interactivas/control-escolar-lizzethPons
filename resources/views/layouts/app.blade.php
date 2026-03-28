@@ -269,21 +269,24 @@
     <div class="topbar">
         <div class="topbar-content">
             <div class="brand">Control Escolar</div>
+                <div class="nav-links">
+                    <a href="{{ route('home') }}">Inicio</a>
+                    <a href="{{ route('users.index') }}">Usuarios</a>
+                    <a href="{{ route('materias.index') }}">Materias</a>
+                    <a href="{{ route('horarios.index') }}">Horarios</a>
+                    <a href="{{ route('grupos.index') }}">Grupos</a>
+                    <a href="{{ route('inscripciones.index') }}">Inscripciones</a>
+                    <a href="{{ route('calificaciones.index') }}">Calificaciones</a>
+                    <a href="{{ route('tareas.index') }}">Tareas</a>
+                    <a href="{{ route('mis.tareas') }}">Mis tareas</a>
+                    <a href="{{ route('entregas.revisar') }}">Revisar entregas</a>
 
-            <div class="nav-links">
-                <a href="{{ route('home') }}">Inicio</a>
-                <a href="{{ route('users.index') }}">Usuarios</a>
-                <a href="{{ route('materias.index') }}">Materias</a>
-                <a href="{{ route('horarios.index') }}">Horarios</a>
-                <a href="{{ route('grupos.index') }}">Grupos</a>
-                <a href="{{ route('inscripciones.index') }}">Inscripciones</a>
-                <a href="{{ route('calificaciones.index') }}">Calificaciones</a>
-
-                <form action="{{ route('logout') }}" method="POST" class="inline">
-                    @csrf
-                    <button type="submit" class="btn btn-danger">Cerrar sesión</button>
-                </form>
-            </div>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+                    </form>
+                </div>
+           
         </div>
     </div>
     @endauth

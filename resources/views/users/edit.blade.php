@@ -19,8 +19,13 @@
         <label>Confirmar nueva contraseña</label>
         <input type="password" name="password_confirmation">
 
-        <label>Rol</label>
-        <input type="text" name="rol" value="{{ old('rol', $user->rol) }}">
+        <div class="form-group">
+            <label>Rol</label>
+            <select name="rol" required>
+                <option value="alumno" {{ old('rol', $user->rol) == 'alumno' ? 'selected' : '' }}>Alumno</option>
+                <option value="maestro" {{ old('rol', $user->rol) == 'maestro' ? 'selected' : '' }}>Maestro</option>
+            </select>
+        </div>
 
         <label>
             <input type="checkbox" name="activo" value="1" {{ $user->activo ? 'checked' : '' }} style="width:auto;">
